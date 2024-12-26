@@ -8,7 +8,7 @@ import tkinter as tk
 def scan2():
     try:
         # Tên file ảnh đầu vào
-        input_image = 'dethitoan.jpg'
+        input_image = 'mydoc.jpg'
 
         # Đọc ảnh
         image = cv2.imread(input_image)
@@ -29,11 +29,11 @@ def scan2():
         # Chuyển ảnh màu thành ảnh xám
         gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
 
-        # Làm mờ ảnh xám để xóa noise
+        # Làm mờ ảnh xám để xóa noise bằng cách áp dụng bộ lọc Gaussian Blur.
         blur = cv2.blur(gray, (3, 3))
 
-        # Tìm cạnh bằng Canny
-        edge = cv2.Canny(blur, 50, 300, 3)
+        # Tìm cạnh bằng thuật toán Canny
+        edge = cv2.Canny(blur, 30, 150, 3)
 
         # Hiển thị các bước xử lý ảnh
         cv2.imshow("Gray Image", gray)
@@ -64,7 +64,7 @@ def scan2():
             return
 
         # Vẽ contour lên ảnh gốc
-        cv2.drawContours(resized_image, [approx], -1, (0, 0, 255), 3)
+        cv2.drawContours(resized_image, [approx], -1, (0, 255, 0), 3)
         cv2.imshow("Contour Drawing", resized_image)
         cv2.waitKey(1)
 
@@ -84,14 +84,14 @@ def scan2():
         # Tính chiều rộng và chiều cao mới
         (tl, tr, br, bl) = rect
         widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
-        widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
+        widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2)) #kclonnhatgiuatr
         maxWidth = max(int(widthA), int(widthB))
 
         heightA = np.sqrt(((tr[0] - br[0]) ** 2) + ((tr[1] - br[1]) ** 2))
-        heightB = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2))
-        maxHeight = max(int(heightA), int(heightB))
+        heightB = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2)) #kclonnhatgiuatl
+        maxHeight = max(int(heightA), int(heightB)) 
 
-        # Xác định các điểm mới của hình chữ nhật
+        # Mảng tọa độ chứa điểm góc của HCN mới
         dst = np.array([
             [0, 0],
             [maxWidth - 1, 0],
@@ -99,13 +99,13 @@ def scan2():
             [0, maxHeight - 1]
         ], dtype="float32")
 
-        # Tính ma trận biến đổi và thực hiện warp
-        M = cv2.getPerspectiveTransform(rect, dst)
-        warped = cv2.warpPerspective(resized_image, M, (maxWidth, maxHeight))
+        # Tính mtr M va doi phoi canh anh goc bang M
+        M = cv2.getPerspectiveTransform(rect, dst) #diemgocrectsangdst
+        warped = cv2.warpPerspective(resized_image, M, (maxWidth, maxHeight)) 
 
         # Chuyển ảnh warp sang ảnh xám và áp dụng threshold
         warped_gray = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
-        _, warped_thresh = cv2.threshold(warped_gray, 200, 255, cv2.THRESH_BINARY)
+        _, warped_thresh = cv2.threshold(warped_gray, 180, 255, cv2.THRESH_BINARY) #den<trang
 
         # Hiển thị kết quả cuối
         cv2.imshow("Warped Image", warped)
