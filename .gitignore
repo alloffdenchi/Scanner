@@ -34,8 +34,8 @@ ENV/
 # Project specific
 output/
 keys/
-*.jpg
-*.png
+# *.jpg
+# *.png
 *.pdf
 *.docx
 *.txt
