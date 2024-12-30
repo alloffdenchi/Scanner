@@ -1,0 +1,12 @@
+opencv-python>=4.5.0
+numpy>=1.19.0
+imutils>=0.5.4
+Pillow>=8.0.0
+google-cloud-vision>=2.0.0
+python-docx>=0.8.11
+reportlab>=3.6.0
+tkinter
+pyrtf>=0.45
+google-auth>=2.0.0
+google-api-core>=2.0.0
+google-auth-oauthlib>=0.4.6

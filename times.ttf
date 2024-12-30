@@ -1,0 +1,5 @@
+datas=[
+    ('images/wall.jpg', 'images'),
+    ('keys/api-key.json', 'keys'),
+    ('times.ttf', '.'),  # File này không tìm thấy
+],
